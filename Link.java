@@ -67,6 +67,11 @@ public class Link {
         {
             hubList.get(i).forwardPacket(packet, this);
         }
+        length = switchList.size();
+        for(int i = 0; i < length; i++)
+        {
+            switchList.get(i).sendPacket(packet,this);
+        }
     }
 
     public void deliverPacket(Packet packet,Hub hub)
@@ -84,6 +89,35 @@ public class Link {
             if(hubList.get(i) != hub)
             {
                 hubList.get(i).forwardPacket(packet, this);
+            }
+        }
+        length = switchList.size();
+        for(int i = 0; i < length; i++)
+        {
+            switchList.get(i).sendPacket(packet,this);
+        }
+    }
+
+    public void deliverPacket(Packet packet,Switch switch1)
+    {
+        int length = hostList.size();
+        for(int i = 0;  i < length; i++)
+        {
+            
+            hostList.get(i).receivePacket(packet);
+            
+        }
+        length = hubList.size();
+        for(int i = 0; i < length; i++)
+        {
+            hubList.get(i).forwardPacket(packet, this);
+        }
+        length = switchList.size();
+        for(int i = 0; i < length; i++)
+        {
+            if(switchList.get(i) != switch1)
+            {
+                switchList.get(i).sendPacket(packet,this);
             }
         }
     }

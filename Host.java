@@ -24,6 +24,7 @@ public class Host {
         this.macAddress = macAdrress;
         this.IP_Address = IP_Address;
         
+        System.out.println("Host "+hostName+" created!!!  Mac Address : "+macAdrress+"  IP Address : "+getIPString());
     }
 
     /**********************************************   Getters   ************************************************** */
@@ -43,6 +44,11 @@ public class Host {
     public  int[] getIP_Address()
     {
         return this.IP_Address;
+    }
+
+    public String getIPString()
+    {
+        return IP_Address[0]+"."+IP_Address[1]+"."+IP_Address[2]+"."+IP_Address[3];
     }
 
     /********************************************* Methods  ****************************************************** */

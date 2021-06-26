@@ -6,6 +6,7 @@ public class Simulator {
     static List<Host> hostList = new ArrayList<Host>();
     static List<Link> links = new ArrayList<Link>();
     static List<Hub> hubList = new ArrayList<Hub>();
+    static List<Switch> switchList = new ArrayList<Switch>();
 
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
@@ -19,6 +20,8 @@ public class Simulator {
             System.out.println("4. Manage Hosts");
             System.out.println("5. Create Hub");
             System.out.println("6. Manage Hub");
+            System.out.println("7. Create Switch");
+            System.out.println("8. Manage Switch");
 
             int key = sc.nextInt();
 
@@ -40,6 +43,12 @@ public class Simulator {
                     break;
                 case 6:
                     manageHub();
+                    break;
+                case 7:
+                    createSwitch();
+                    break;
+                case 8:
+                    manageSwitch();
                     break;
                 default:
                     break;
@@ -72,7 +81,7 @@ public class Simulator {
         clearScreen();
         System.out.println();
         System.out.println();
-        System.out.println("Host created !");
+        
         
         return new Host(hostName,macAddress,IP_Address);
     }
@@ -240,6 +249,60 @@ public class Simulator {
         }
     }
 
+    // 7 Create Switch
+    private static void createSwitch()
+    {
+        clearScreen();
+        switchList.add(new Switch());
+    }
+
+    // 8 Manage Switch
+    private static void manageSwitch()
+    {
+        int totalSwitch = switchList.size();
+        clearScreen();
+        while(true)
+        {
+            System.out.println("Choose a Switch to operate on :-");
+            System.out.println("0)  Return to main menu ");
+            for(int i = 0; i < totalSwitch; i++)
+            {
+                System.out.println(i+1+") Switch ID"+switchList.get(i).getId());
+            }
+            int key = sc.nextInt();
+            if(key == 0)
+            {
+                
+                break;
+            }
+            debugSwitch(switchList.get(key-1));
+            clearScreen();
+
+        }
+    }
+
+    
+    // 8.1 Debug Switch
+     private static void debugSwitch(Switch switch1) {
+        while(true)
+        {
+            System.out.println("1) Add Connection :-"); 
+            System.out.println("2) Return");
+            int key = sc.nextInt();
+            if(key == 2)
+            {
+                break;
+            }
+            else if(key == 1)
+            {
+                clearScreen();
+                System.out.println("Enter the link_ID you want to connect :-");
+                int linkID = sc.nextInt();
+                switch1.addConnection(getLink(linkID));
+            }
+            
+        }
+    }
 /******************************************************* General Methods ************************************* */
 
 
