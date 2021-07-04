@@ -25,25 +25,24 @@ public class Link {
     //List of Switch's connected to this Link
     List<Switch> switchList = new ArrayList<Switch>();
 
-    //List of switch's connected to this Link
-   // List<Switch.Interface> switchList = new ArrayList<Switch.Interface>();
+    //List of Router's connected to this link
+    List<Router.Interfaces> rList = new ArrayList<Router.Interfaces>();
 
 
-    //*******************************************Constructors***************************8 */
+    //*******************************************   Constructor   ***************************8 */
     public Link()
     {
         
         this.ID = count++;
     }
 
-    //************************************************************************************ */
+    //*******************************************   Methods       ***************************************** */
 
-
+    //Returns the ID of the link
     public int getID()
     {
         return this.ID;
     }
-
 
     //add Host Connection
     public void addHostConnection(Host host)
@@ -51,7 +50,7 @@ public class Link {
         hostList.add(host);
     }
 
-    
+    //Deliver's the packet from the particular Host to all the connected devices
     public void deliverPacket(Packet packet,Host host)
     {
         int length = hostList.size();
@@ -72,8 +71,14 @@ public class Link {
         {
             switchList.get(i).sendPacket(packet,this);
         }
+        length = rList.size();
+        for(int i = 0; i < length; i++)
+        {
+            rList.get(i).sendPacket(packet, this);
+        }
     }
 
+    //Deliver's the packet from the particular HUB to all the connected devices
     public void deliverPacket(Packet packet,Hub hub)
     {
         int length = hostList.size();
@@ -96,8 +101,14 @@ public class Link {
         {
             switchList.get(i).sendPacket(packet,this);
         }
+        length = rList.size();
+        for(int i = 0; i < length; i++)
+        {
+            rList.get(i).sendPacket(packet, this);
+        }
     }
 
+    //Deliver's the packet from the particular Switch to all the connected devices
     public void deliverPacket(Packet packet,Switch switch1)
     {
         int length = hostList.size();
@@ -118,6 +129,41 @@ public class Link {
             if(switchList.get(i) != switch1)
             {
                 switchList.get(i).sendPacket(packet,this);
+            }
+        }
+        length = rList.size();
+        for(int i = 0; i < length; i++)
+        {
+            rList.get(i).sendPacket(packet, this);
+        }
+    }
+
+    //Deliver's the packet from the particular Router to all the connected devices
+    public void deliverPacket(Packet packet,Router.Interfaces itf)
+    {
+        int length = hostList.size();
+        for(int i = 0;  i < length; i++)
+        {
+            
+            hostList.get(i).receivePacket(packet);
+            
+        }
+        length = hubList.size();
+        for(int i = 0; i < length; i++)
+        {
+            hubList.get(i).forwardPacket(packet, this);
+        }
+        length = switchList.size();
+        for(int i = 0; i < length; i++)
+        {
+            switchList.get(i).sendPacket(packet,this);
+        }
+        length = rList.size();
+        for(int i = 0; i < length; i++)
+        {
+            if(rList.get(i) != itf)
+            {
+                rList.get(i).sendPacket(packet, this);
             }
         }
     }

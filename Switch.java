@@ -4,11 +4,10 @@ import java.util.LinkedList;
 public class Switch {
 
     static int counter = 0;
+    
     int MAXIMUM_INTERFACES = 10;
 
     LinkedList<Link> interfaces = new LinkedList<Link>();
-
-    
 
     //Number of interfaces
     int n = 0;
@@ -21,6 +20,8 @@ public class Switch {
 
     HashMap<Integer, Integer> interfaceLink = new HashMap<>();
 
+
+    /***********************************************   Constructors    ***************************************** */
     public Switch()
     {
         this.id = counter++;
@@ -37,8 +38,6 @@ public class Switch {
         return this.id;
     }
 
-    //add an inteface
-    
 
     public void sendPacket(Packet packet,Link link)
     {

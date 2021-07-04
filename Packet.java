@@ -14,12 +14,20 @@ public class Packet {
     //FrameData
     private String frameData;
 
+    //Sender's IP Address
+    private Integer[] senderIP;
 
-    Packet(String destinationMac, String sourceMac, String frameData)
+    //Receiver's IP Address
+    private Integer[] receiverIP;
+
+
+    Packet(String destinationMac, String sourceMac, String frameData, Integer[] senderIP, Integer[] receiverIP)
     {
         this.destinationMac = destinationMac;
         this.sourceMac = sourceMac;
         this.frameData = frameData;
+        this.senderIP = senderIP;
+        this.receiverIP = receiverIP;
     }
 
 
@@ -44,5 +52,19 @@ public class Packet {
         return this.destinationMac;
     }
 
+    Integer[] getSendersIP()
+    {
+        return this.senderIP;
+    }
 
+    Integer[] getReceiversIP()
+    {
+        return this.receiverIP;
+    }
+
+    //Set's destination mac Address
+    void setDMacAddress(String macAddress)
+    {
+        this.destinationMac = macAddress;
+    }
 }

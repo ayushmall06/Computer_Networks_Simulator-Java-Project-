@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Host {
@@ -9,6 +10,10 @@ public class Host {
     //Store's the system Mac Address
     private String macAddress;
 
+    private Integer[] subnetMask;
+
+    private Integer[] gateway;
+
     //Received Packet
     private Packet receivedPacket = null;
 
@@ -16,18 +21,32 @@ public class Host {
     List<Link> links = new ArrayList<Link>();
 
     //IP Adress
-    int[] IP_Address;
+    Integer[] IP_Address;
 
-    public Host(String hostName, String macAdrress, int []IP_Address)
+    /***********************************************   Constructor  ********************************************** */
+    public Host(String hostName,  Integer[] IP_Address, Integer[] subnet, Integer[] gateway)
     {
         this.hostName = hostName;
-        this.macAddress = macAdrress;
+        this.macAddress = DeviceManager.getMAC_ADDRESS();
         this.IP_Address = IP_Address;
-        
-        System.out.println("Host "+hostName+" created!!!  Mac Address : "+macAdrress+"  IP Address : "+getIPString());
+        this.subnetMask = subnet;
+        ARP.arp.put(this.getIPString(), this.macAddress);
+        this.gateway = gateway;
+        System.out.println("Host "+hostName+" created!!!  Mac Address : "+this.macAddress+"  IP Address : "+getIPString()+"  SubnetMask: /"+this.subnetMask[4]);
     }
 
     /**********************************************   Getters   ************************************************** */
+
+    public Integer[] getSubnetMask()
+    {
+        return this.subnetMask;
+    }
+
+    public Integer[] getGateWay()
+    {
+        return this.gateway;
+    }
+
     //Returns hostName
     public  String getHostName()
     {
@@ -41,7 +60,7 @@ public class Host {
     }
 
     //Returns Host IPAddress
-    public  int[] getIP_Address()
+    public  Integer[] getIP_Address()
     {
         return this.IP_Address;
     }
@@ -52,6 +71,8 @@ public class Host {
     }
 
     /********************************************* Methods  ****************************************************** */
+
+
     public boolean addConnection(Link link)
     {
         if(link == null)
@@ -72,7 +93,11 @@ public class Host {
 
     }
     public void receivePacket(Packet packet) {
-        System.out.println(this.hostName+ " "+ packet.getData());
+        System.out.println("Recieved message");
+        if(Arrays.equals(packet.getReceiversIP(), this.getIP_Address()))
+        {
+            System.out.println("Host "+this.getHostName()+" received the packet from "+Router.getString(packet.getSendersIP())+"\n Message : "+packet.getData());
+        }
     }
 
 }
