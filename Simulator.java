@@ -171,9 +171,10 @@ public class Simulator {
         {
             System.out.println("1) Add Connection :-");
             System.out.println("2  Send Message :-");
-            System.out.println("3) Return");
+            System.out.println("3 Add Port");
+            System.out.println("4) Return");
             int key = sc.nextInt();
-            if(key == 3)
+            if(key == 4)
             {
                 break;
             }
@@ -203,20 +204,35 @@ public class Simulator {
                 int choice = sc.nextInt();
                 System.out.println("Enter the message to transmit : ");
                 String message = sc.next();
+                System.out.println("Choose the port Number to send message from ;-");
+                int l = host.ports.size();
+                for(int i = 0; i < l; i++)
+                {
+                    System.out.println(i+") "+host.ports.get(i));
+                }
+                int sPort = host.ports.get(sc.nextInt());
+                System.out.println("Enter the destination port number");
+                int dPort = sc.nextInt();
                 if(Router.checkIfSameNetwork(host.getIP_Address(), hostList.get(choice).getIP_Address(), host.getSubnetMask()))
                 {
                     String destMac = ARP.arp.get(hostList.get(choice).getIPString());
 
-                    host.SendPacket(new Packet(destMac, host.getMacAddress(), message,host.getIP_Address(),hostList.get(choice).getIP_Address()));
+                    host.SendPacket(new Packet(destMac, host.getMacAddress(), message,host.getIP_Address(),hostList.get(choice).getIP_Address(), sPort, dPort));
                 }
                 else
                 {
                     String destMac = ARP.arp.get(Router.getString(host.getGateWay()));
-                    host.SendPacket(new Packet(destMac, host.getMacAddress(), message, host.getIP_Address(), hostList.get(choice).getIP_Address()));
+                    host.SendPacket(new Packet(destMac, host.getMacAddress(), message, host.getIP_Address(), hostList.get(choice).getIP_Address(), sPort,dPort));
                 }
 
                 
             }
+            else if(key == 3)
+            {
+                System.out.println("Enter the port no to make it active");
+                host.addPort(sc.nextInt());
+            }
+            
         }
     }
 

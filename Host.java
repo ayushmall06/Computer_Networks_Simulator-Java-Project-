@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Host {
@@ -22,6 +23,9 @@ public class Host {
 
     //IP Adress
     Integer[] IP_Address;
+
+    //Ports
+    List<Integer> ports = new LinkedList<Integer>();
 
     /***********************************************   Constructor  ********************************************** */
     public Host(String hostName,  Integer[] IP_Address, Integer[] subnet, Integer[] gateway)
@@ -96,7 +100,87 @@ public class Host {
         System.out.println("Recieved message");
         if(Arrays.equals(packet.getReceiversIP(), this.getIP_Address()))
         {
-            System.out.println("Host "+this.getHostName()+" received the packet from "+Router.getString(packet.getSendersIP())+"\n Message : "+packet.getData());
+            if(this.ports.contains(packet.getDestinationPort()))
+            {
+                int nf,N;
+        int no_tr=0;
+       
+ 
+        System.out.println("Enter the number of frames : ");
+        nf = packet.getData().length();
+        System.out.println("Enter the Window Size : ");
+        N = 5;
+        int i=1;
+        while(i<=nf)
+        {
+            int x=0;
+            for(int j=i;j<i+N && j<=nf;j++)
+            {
+                System.out.println("Sent frame "+j+" "+packet.getData().charAt(j-1));
+                tSleep();
+        
+                no_tr++;
+            }
+            for(int j=i;j<i+N && j<=nf;j++)
+            {
+                int flag = getRandom()%2;
+                if(!(flag==1))
+                {
+                    System.out.println("Acknowledgement for frame "+j);
+                    tSleep();
+                    x++;
+                }
+                else
+                {   
+                    System.out.println("Frame "+j+" Not Received");
+                    System.out.println("Retransmitting window");
+                    tSleep();
+                    break;
+                }
+            }
+
+            i+=x;
+        }
+        System.out.println("Total Number of tranmissions "+no_tr);
+
+                System.out.println("Host "+this.getHostName()+" received the packet from "+Router.getString(packet.getSendersIP())+"\n Message : "+packet.getData()+" at port No: "+packet.getDestinationPort());
+            }
+            else
+            {
+                System.out.println("Destination Port Not Reachable");
+            }
+        }
+    }
+
+    public void addPort(Integer port)
+    {
+        if(ports.contains(port))
+        {
+
+            System.out.println("Port "+port +" already added to host "+this.getHostName()+"!!");
+        }
+        else
+        {
+            ports.add(port);
+            System.out.println("Port "+port +" is successfully added to host "+this.getHostName()+"!!");
+        }
+    }
+
+
+    static int getRandom()
+    {
+        int random_int = (int)Math.floor(Math.random()*(100-1+1)+1);
+        return random_int;
+    }
+    static void tSleep()
+    {
+        try        
+        {
+            Thread.sleep(500);
+        } 
+        catch(InterruptedException ex) 
+        {
+            Thread.currentThread().interrupt();
         }
     }
 

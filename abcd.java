@@ -10,32 +10,33 @@ public class abcd{
     static void tSleep()
     {
         try        
-{
-    Thread.sleep(1000);
-} 
-catch(InterruptedException ex) 
-{
-    Thread.currentThread().interrupt();
-}
+        {
+            Thread.sleep(500);
+        } 
+        catch(InterruptedException ex) 
+        {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public static void main(String[] args) {
+        Packet packet = new Packet("destinationPort", "sourceMac", "LoveYouNilza", new Integer[]{1,1}, new Integer[]{1,1}, 64, 64);
         
         int nf,N;
         int no_tr=0;
         Scanner sc = new Scanner(System.in);
  
         System.out.println("Enter the number of frames : ");
-        nf = sc.nextInt();
+        nf = packet.getData().length();
         System.out.println("Enter the Window Size : ");
-        N = sc.nextInt();
+        N = 5;
         int i=1;
         while(i<=nf)
         {
             int x=0;
             for(int j=i;j<i+N && j<=nf;j++)
             {
-                System.out.println("Sent frame "+j);
+                System.out.println("Sent frame "+j+" "+packet.getData().charAt(j-1));
                 tSleep();
         
                 no_tr++;
@@ -47,7 +48,7 @@ catch(InterruptedException ex)
                 {
                     System.out.println("Acknowledgement for frame "+j);
                     tSleep();
-                 x++;
+                    x++;
                 }
                 else
                 {   

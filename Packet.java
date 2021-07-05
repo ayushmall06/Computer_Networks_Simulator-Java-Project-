@@ -20,19 +20,39 @@ public class Packet {
     //Receiver's IP Address
     private Integer[] receiverIP;
 
+    //Sender's Port
+    private Integer senderPort;
 
-    Packet(String destinationMac, String sourceMac, String frameData, Integer[] senderIP, Integer[] receiverIP)
+    //Destination Port
+    private Integer destinationPort;
+
+
+    Packet(String destinationMac, String sourceMac, String frameData, Integer[] senderIP, Integer[] receiverIP, Integer senderPort, Integer destinationPort)
     {
         this.destinationMac = destinationMac;
         this.sourceMac = sourceMac;
         this.frameData = frameData;
         this.senderIP = senderIP;
         this.receiverIP = receiverIP;
+        this.senderPort = senderPort;
+        this.destinationPort = destinationPort;
     }
 
 
 
     /******************************************************  Methods  ******************************************** */
+
+    //Return Senders Port
+    public Integer getSenderPort()
+    {
+        return this.senderPort;
+    }
+
+    //Return Destination Port
+    public Integer getDestinationPort()
+    {
+        return this.destinationPort;
+    }
 
     //Returns frameData
     String getData()
